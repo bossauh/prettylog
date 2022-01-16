@@ -5,6 +5,7 @@ from inspect import getframeinfo, stack
 from typing import Tuple
 from termcolor import colored
 from queue import Queue
+from pathlib import Path
 
 
 def stack_info() -> Tuple[str, int]:
@@ -72,6 +73,10 @@ class Logger:
         self.cache_size = kwargs.get("cache_size", 5)
         self.disabled_group_prints = kwargs.get("disabled_group_prints", [])
         self.disabled_group_files = kwargs.get("disabled_group_files", [])
+
+        # Create folder if it doesn't exist
+        if folder:
+            Path(folder).mkdir(exist_ok=True)
 
         if self._debug:
             self.level = "debug"
