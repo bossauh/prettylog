@@ -2,7 +2,8 @@ import ntpath
 import os
 import datetime
 from inspect import getframeinfo, stack
-from typing import Tuple
+from typing import Tuple, Callable
+from dataclasses import dataclass
 from termcolor import colored
 from queue import Queue
 from pathlib import Path
@@ -21,6 +22,37 @@ LEVELS = {
     "error": ["red"],
     "critical": ["white", "on_red"]
 }
+
+
+@dataclass
+class Callbacks:
+
+    """
+    This class creates a mapping of callback functions.
+    Before every log function call returns, it will call the callback mapped to that logging level.
+    
+    Here's what every callback function should look like.
+
+    >>> def on_debug(metadata: dict) -> None:
+            '''
+            Here's what the metadata looks like. Taken directly from `log()` source.
+            {
+                "level": level,
+                "iso_date": dt.isoformat(),
+                "file": fname,
+                "file:lineno": f"{fname}:{no}",
+                "text": text,
+                "group": group
+            }
+            '''
+    """
+
+    on_debug: Callable = None
+    on_info: Callable = None
+    on_success: Callable = None
+    on_warning: Callable = None
+    on_error: Callable = None
+    on_critical: Callable = None
 
 
 class Logger:
@@ -59,6 +91,8 @@ class Logger:
         List of groups that are disabled for printing. Defaults to None
     `disabled_group_files` : List[str]
         List of groups that are disabled for writing to a file. Defaults to None
+    `callbacks` : Callbacks
+        A `Callbacks` class that contains callback functions to be called after each log coressponding that category.
     """
 
     def __init__(self, folder: str = None, **kwargs) -> None:
@@ -73,6 +107,7 @@ class Logger:
         self.cache_size = kwargs.get("cache_size", 5)
         self.disabled_group_prints = kwargs.get("disabled_group_prints", [])
         self.disabled_group_files = kwargs.get("disabled_group_files", [])
+        self.callbacks = kwargs.get("callbacks", Callbacks())
 
         # Create folder if it doesn't exist
         if folder:
@@ -226,5 +261,14 @@ class Logger:
 
         # Check if we have to dump the cache
         self._check_cache_size()
+
+        # Call the callback function related to this log if it exists.
+        try:
+            callback_function = getattr(self.callbacks, f"on_{level}")
+        except AttributeError:
+            callback_function = None
+        
+        if callback_function is not None:
+            callback_function(metadata)
 
         return formatted
