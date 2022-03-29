@@ -2,13 +2,13 @@ from distutils.core import setup
 setup(
     name="py-prettylog",
     packages=["prettylog"],
-    version="0.2",
+    version="0.3",
     license="MIT",
     description="Pretty looking logging library that's also extremely functional.",
     author="Philippe Mathew",
     author_email="philmattdev@gmail.com",
     url="https://github.com/bossauh/prettylog",
-    download_url="https://github.com/bossauh/prettylog/archive/refs/tags/v_02.tar.gz",
+    download_url="https://github.com/bossauh/prettylog/archive/refs/tags/v_03.tar.gz",
     keywords=["logger", "logging"],
     install_requires=[
         "termcolor"
