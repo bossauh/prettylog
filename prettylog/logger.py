@@ -79,7 +79,7 @@ class Logger:
             Path(folder).mkdir(exist_ok=True)
 
         if self._debug:
-            self.level = "debug"
+            self.print_level = "debug"
             self.file_level = "debug"
 
         self.cache = Queue()
