@@ -26,6 +26,8 @@ You can specify the following parameters for the `Logger()` class.
 - `debug` : `bool` Debug mode. Defaults to False. If True, print_level and file_level will automatically be set to debug.
 - `print_level` : `str` What level to print on. Anything above and at this level will be printed. Defaults to info.
 - `file_level` : `str` What level to write on. Anything above and at this level will be written to a file. Defaults to warning.
+- `encoding` : `str` Encoding to use when logging onto a file. Defaults to "utf-8"
+- `separator` : `str` What separator to use when logging onto a file. Defaults to "\n"
 - `cache_size` : `int` How many logs to store in the cache before updating the file again. Defaults to 5.
 - `disabled_group_prints` : `List[str]` List of groups that are disabled for printing. Defaults to None
 - `disabled_group_files` : `List[str]` List of groups that are disabled for writing to a file. Defaults to None
