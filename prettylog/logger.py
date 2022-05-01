@@ -229,6 +229,8 @@ class Logger:
             What level the log should be.
         `group` : str
             What group this current log belongs to. Defaults to self.default group which is __main__ by default but it can be modified using the set_group method.
+        `**kwargs` :
+            Other kwargs will be passed onto the callback function if it exists.
 
         Returns
         -------
@@ -237,8 +239,7 @@ class Logger:
 
         # Get stack info (File name, Line no.)
         fname, no = stack_info()
-
-        group = kwargs.get("group", self.default_group)
+        group = kwargs.pop("group", self.default_group)
 
         # Construct metadata
         dt = datetime.datetime.now()
