@@ -31,7 +31,7 @@ You can specify the following parameters for the `Logger()` class.
 - `disabled_group_files` : `List[str]` List of groups that are disabled for writing to a file. Defaults to None
 
 ## Logging Methods
-You can pass a `group="my group"` parameter into each logging method to specify which group that specific log belongs to.
+You can optionally pass a `group="my group"` parameter into each logging method to specify which group that specific log belongs to.
 ```py
 logging.debug("This is a debug message")
 logging.info("This is some info")
