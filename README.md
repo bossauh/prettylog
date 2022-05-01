@@ -29,6 +29,7 @@ You can specify the following parameters for the `Logger()` class.
 - `cache_size` : `int` How many logs to store in the cache before updating the file again. Defaults to 5.
 - `disabled_group_prints` : `List[str]` List of groups that are disabled for printing. Defaults to None
 - `disabled_group_files` : `List[str]` List of groups that are disabled for writing to a file. Defaults to None
+- `callbacks` : `Callbacks` What callbacks to call. Check the example below on how to provide and use callbacks.
 
 ## Logging Methods
 You can optionally pass a `group="my group"` parameter into each logging method to specify which group that specific log belongs to.
@@ -40,6 +41,47 @@ logging.warning("Warning! Warning!")
 logging.error("Error! Error!")
 logging.critical("Oh shit critical error")
 logging.Cr1TiKal("Moist") # Alias to .critical
+```
+
+## Callbacks
+You can provide a `Callbacks` class to your `Logger()` class which basically calls the callback methods provided inside that class whenever a log occurs. 
+
+Here's an example of how to provide and use the `Callbacks` class.
+```py
+from prettylog import Logger, Callbacks
+
+def on_debug(metadata: dict):
+    """
+    Each callback only requires one parameter, that is the callback. Additional parameters can be accepted like in `on_success`.
+
+    Here's what the metadata looks like. Taken directly from the source of `log()`
+    {
+      "level": level,
+      "iso_date": dt.isoformat(),
+      "file": fname,
+      "file:lineno": f"{fname}:{no}",
+      "text": text,
+      "group": group
+    }
+    """
+    print(metadata)
+
+def on_success(metadata: dict, foo: str):
+    """
+    Each callback can take extra parameters, 
+    these parameters comes from 
+    >>> logging.success("amongus", foo="bar")
+    """
+    print(metadata, foo)
+
+# You do not have to create a callback for each level
+logging = Logger(callbacks=Callbacks(
+    on_debug=on_debug,
+    on_success=on_success
+))
+
+logging.debug("impostor") # Upon logging, on_debug is called
+logging.success("amongus", foo="bar") # Upon logging, on_success is called and foo is passed
 ```
 
 ## Formatting
