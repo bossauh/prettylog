@@ -273,6 +273,6 @@ class Logger:
             callback_function = None
         
         if callback_function is not None:
-            callback_function(metadata)
+            callback_function(metadata, **kwargs)
 
         return formatted
