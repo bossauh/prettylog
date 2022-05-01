@@ -7,6 +7,9 @@ from dataclasses import dataclass
 from termcolor import colored
 from queue import Queue
 from pathlib import Path
+from colorama import init
+
+init()
 
 
 def stack_info() -> Tuple[str, int]:
