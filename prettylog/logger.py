@@ -88,6 +88,8 @@ class Logger:
         What level to print on. Anything above and at this level will be printed. Defaults to info.
     `file_level` : str
         What level to write on. Anything above and at this level will be written to a file. Defaults to warning.
+    `encoding` : str
+        Encoding to use when logging onto a file. Defaults to "utf-8"
     `cache_size` : int
         How many logs to store in the cache before updating the file again. Defaults to 5.
     `disabled_group_prints` : List[str]
@@ -107,6 +109,7 @@ class Logger:
         self._debug = kwargs.get("debug", False)
         self.print_level = kwargs.get("print_level", "info")
         self.file_level = kwargs.get("file_level", "warning")
+        self.encoding = kwargs.get("encoding", "utf-8")
         self.cache_size = kwargs.get("cache_size", 5)
         self.disabled_group_prints = kwargs.get("disabled_group_prints", [])
         self.disabled_group_files = kwargs.get("disabled_group_files", [])
@@ -192,7 +195,7 @@ class Logger:
                     if fname:
                         logs_joined = "\n".join(logs)
 
-                        with open(fname, "a") as f:
+                        with open(fname, "a", encoding=self.encoding) as f:
                             f.write(f"{logs_joined}\n")
 
     def _check_cache_size(self) -> None:
